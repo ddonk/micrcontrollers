@@ -3,29 +3,29 @@ OpdrachtB4.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000010  00800100  000007c8  0000083c  2**0
+  0 .data         0000000a  00800100  000007c8  0000083c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         000007c8  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      0000005c  00000000  00000000  0000084c  2**0
+  2 .comment      0000005c  00000000  00000000  00000846  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000008a8  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000008a4  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000080  00000000  00000000  000008e4  2**0
+  4 .debug_aranges 00000080  00000000  00000000  000008e0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000cb8  00000000  00000000  00000964  2**0
+  5 .debug_info   00000cb8  00000000  00000000  00000960  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000a2b  00000000  00000000  0000161c  2**0
+  6 .debug_abbrev 00000a2b  00000000  00000000  00001618  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000005a1  00000000  00000000  00002047  2**0
+  7 .debug_line   000005a1  00000000  00000000  00002043  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000000fc  00000000  00000000  000025e8  2**2
+  8 .debug_frame  000000fc  00000000  00000000  000025e4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000049a  00000000  00000000  000026e4  2**0
+  9 .debug_str    0000049a  00000000  00000000  000026e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000002b0  00000000  00000000  00002b7e  2**0
+ 10 .debug_loc    000002b0  00000000  00000000  00002b7a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000060  00000000  00000000  00002e2e  2**0
+ 11 .debug_ranges 00000060  00000000  00000000  00002e2a  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -121,7 +121,7 @@ Disassembly of section .text:
   a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
   a8:	07 90       	elpm	r0, Z+
   aa:	0d 92       	st	X+, r0
-  ac:	a0 31       	cpi	r26, 0x10	; 16
+  ac:	aa 30       	cpi	r26, 0x0A	; 10
   ae:	b1 07       	cpc	r27, r17
   b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
   b2:	7a d0       	rcall	.+244    	; 0x1a8 <main>
@@ -372,12 +372,12 @@ int main( void )
 		PORTA = ADCH;
  1d2:	85 b1       	in	r24, 0x05	; 5
  1d4:	8b bb       	out	0x1b, r24	; 27
-		int degrees = 2 + ADCH;
+		int degrees = ADCH + 2;
  1d6:	85 b1       	in	r24, 0x05	; 5
  1d8:	90 e0       	ldi	r25, 0x00	; 0
  1da:	02 96       	adiw	r24, 0x02	; 2
 		char data[20];
-		sprintf(data, "Temperature: %d", degrees);
+		sprintf(data, "Temp: %d", degrees);
  1dc:	9f 93       	push	r25
  1de:	8f 93       	push	r24
  1e0:	80 e0       	ldi	r24, 0x00	; 0

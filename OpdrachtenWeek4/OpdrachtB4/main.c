@@ -57,9 +57,9 @@ int main( void )
 		ADCSRA |= BIT(6);
 		while(ADCSRA & BIT(6));
 		PORTA = ADCH;
-		int degrees = 2 + ADCH;
+		int degrees = ADCH + 2;
 		char data[20];
-		sprintf(data, "Temperature: %d", degrees);
+		sprintf(data, "Temp: %d", degrees);
 		clear();
 		display_text(data);
 				
