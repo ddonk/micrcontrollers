@@ -44,17 +44,17 @@ void lcd_write_command(unsigned char byte)
 	switch_E();
 }
 
-void set_cursor(int position) {
-	
+void display_set_cursor(int position) {
+	//TODO
 }
 
-void clear(){
+void display_clear(){
 	lcd_write_command(0x01);
 	_delay_ms(2);
 	lcd_write_command(0x80);
 }
 
-void init() {
+void display_init() {
 	// See table 13 from the HD44780U datasheet.
 	DDRC = 0xFF;
 	PORTC = 0x00;

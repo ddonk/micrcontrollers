@@ -23,6 +23,7 @@
 #include <avr/interrupt.h>
 #include "LCD/LCD.h"
 #include <stdio.h>
+#include "Accelerometer/Accelerometer.h"
 
 #define BIT(x)	(1 << (x))
 
@@ -37,69 +38,23 @@ void wait( int ms )
 }
 
 
-// Initialize ADC: 10-bits (left justified), free running
-void adcInit( void )
-{
-	ADMUX = 0b11000011;			// AREF=VCC, result left adjusted, channel1 at pin PF1
-	ADCSRA = 0b10000110;		// ADC-enable, no interrupt, start, free running, division by 64
-}
-
-
-
-
-// Main program: ADC at PF1
+// Main program
 int main( void )
 {
-
-	init();
-	DDRF = 0x00;
-	DDRA = 0xff;
-	DDRB = 0xff;				
-	
-	adcInit();					// initialize ADC
+	// Setup for the accelerometer
+	accelerometer_init();
+	display_init();
 
 	while (1)
 	{
-		// Reading with adc
-		ADCSRA |= BIT(6);
-		while(ADCSRA & BIT(6));
+		// Reading measurement
+		accelerometer_measurment_t measurement = accelerometer_read();
+		
 		char data[20];
-		PORTA = ADCL;
-		PORTB = ADCH;
-		int value = ADCL + (ADCH<<8);
-		
-		
-		sprintf(data, "Acc: %dMG",  (int)scaled);
-		clear();
+		sprintf(data, "Acc: %dMG",  measurement.x_geforce);
+		display_clear();
 		display_text(data);
 		
 		wait(100);
 	}
-}
-
-
-// This function changes the channel of the accelerometer.
-int channel;
-void switch_channel(){
-	if (channel == NULL){
-		channel = 3;
-	} else {
-		channel++;
-		if (channel > 5){
-			channel = 3;
-		}
-	}
-	// Clearing
-	ADMUX =  0b11000000;
-	
-	// Adding
-	ADMUX |= channel; 
-}
-
-// This function translates raw data to geforce.
-// Still needs some work.
-int translate_to_geforce(int raw){
-	float fraction =  ((float)raw - (1170.0 / 2.0)) / 1170.0;
-	float scaled = fraction * 30000.0;
-	return (int) scaled;
 }

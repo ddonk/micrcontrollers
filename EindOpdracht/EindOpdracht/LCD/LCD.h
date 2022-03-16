@@ -17,8 +17,8 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-void init();
+void display_init();
 void display_text(char *str);
-void set_cursor(int position);
-void clear(); // Clear everything from display memory.
-void home(); // Reset cursor position to top left.
+void display_set_cursor(int position);
+void display_clear(); // Clear everything from display memory.
+void display_home(); // Reset cursor position to top left.
