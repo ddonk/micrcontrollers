@@ -54,10 +54,11 @@ static void switch_channel(){
 		}
 	}
 	// Clearing
-	ADMUX =  0b11000000;
+	int temporary =  0b11000000;
+	temporary |= channel;
 	
 	// Adding
-	ADMUX |= channel;
+	ADMUX = temporary;
 }
 
 // This function translates raw data to geforce.
