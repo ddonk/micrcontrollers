@@ -124,12 +124,19 @@
   <ItemGroup>
     <Folder Include="LCD" />
     <Folder Include="Accelerometer" />
+    <Folder Include="GameLogic" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accelerometer\Accelerometer.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Accelerometer\Accelerometer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GameLogic\GameLogic.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GameLogic\GameLogic.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="LCD\LCD.c">
