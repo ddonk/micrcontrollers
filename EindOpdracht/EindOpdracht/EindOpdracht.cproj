@@ -20,10 +20,10 @@
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>
     <ProgFlashFromRam>true</ProgFlashFromRam>
-    <RamSnippetAddress />
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
     <UncachedRange />
     <preserveEEPROM>true</preserveEEPROM>
-    <OverrideVtorValue />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
     <ResetRule>0</ResetRule>
     <eraseonlaunchrule>0</eraseonlaunchrule>
@@ -122,16 +122,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="LCD" />
-    <Folder Include="Accelerometer" />
+    <Folder Include="GameLogic\Accelerometer\" />
+    <Folder Include="GameLogic\LCD\" />
     <Folder Include="GameLogic" />
-    <Folder Include="Timer" />
+    <Folder Include="GameLogic\Timer\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accelerometer\Accelerometer.c">
+    <Compile Include="GameLogic\Accelerometer\Accelerometer.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Accelerometer\Accelerometer.h">
+    <Compile Include="GameLogic\Accelerometer\Accelerometer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="GameLogic\GameLogic.c">
@@ -140,19 +140,19 @@
     <Compile Include="GameLogic\GameLogic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LCD\LCD.c">
+    <Compile Include="GameLogic\LCD\LCD.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LCD\LCD.h">
+    <Compile Include="GameLogic\LCD\LCD.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GameLogic\Timer\Timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GameLogic\Timer\Timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Timer\Timer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Timer\Timer.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

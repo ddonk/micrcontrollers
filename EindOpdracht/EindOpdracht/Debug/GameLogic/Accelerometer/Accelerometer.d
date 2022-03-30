@@ -1,5 +1,6 @@
-Accelerometer/Accelerometer.d Accelerometer/Accelerometer.o: \
- ../Accelerometer/Accelerometer.c \
+GameLogic/Accelerometer/Accelerometer.d \
+ GameLogic/Accelerometer/Accelerometer.o: \
+ ../GameLogic/Accelerometer/Accelerometer.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -11,7 +12,7 @@ Accelerometer/Accelerometer.d Accelerometer/Accelerometer.o: \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../Accelerometer/Accelerometer.h
+ ../GameLogic/Accelerometer/Accelerometer.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -35,4 +36,4 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
-../Accelerometer/Accelerometer.h:
+../GameLogic/Accelerometer/Accelerometer.h:

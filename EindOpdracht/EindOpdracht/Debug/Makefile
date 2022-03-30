@@ -33,19 +33,19 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
-../LCD \
-../Accelerometer \
+../GameLogic/Accelerometer/ \
+../GameLogic/LCD/ \
 ../GameLogic \
-../Timer
+../GameLogic/Timer/
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../Accelerometer/Accelerometer.c \
+../GameLogic/Accelerometer/Accelerometer.c \
 ../GameLogic/GameLogic.c \
-../LCD/LCD.c \
-../main.c \
-../Timer/Timer.c
+../GameLogic/LCD/LCD.c \
+../GameLogic/Timer/Timer.c \
+../main.c
 
 
 PREPROCESSING_SRCS += 
@@ -55,32 +55,32 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-Accelerometer/Accelerometer.o \
+GameLogic/Accelerometer/Accelerometer.o \
 GameLogic/GameLogic.o \
-LCD/LCD.o \
-main.o \
-Timer/Timer.o
+GameLogic/LCD/LCD.o \
+GameLogic/Timer/Timer.o \
+main.o
 
 OBJS_AS_ARGS +=  \
-Accelerometer/Accelerometer.o \
+GameLogic/Accelerometer/Accelerometer.o \
 GameLogic/GameLogic.o \
-LCD/LCD.o \
-main.o \
-Timer/Timer.o
+GameLogic/LCD/LCD.o \
+GameLogic/Timer/Timer.o \
+main.o
 
 C_DEPS +=  \
-Accelerometer/Accelerometer.d \
+GameLogic/Accelerometer/Accelerometer.d \
 GameLogic/GameLogic.d \
-LCD/LCD.d \
-main.d \
-Timer/Timer.d
+GameLogic/LCD/LCD.d \
+GameLogic/Timer/Timer.d \
+main.d
 
 C_DEPS_AS_ARGS +=  \
-Accelerometer/Accelerometer.d \
+GameLogic/Accelerometer/Accelerometer.d \
 GameLogic/GameLogic.d \
-LCD/LCD.d \
-main.d \
-Timer/Timer.d
+GameLogic/LCD/LCD.d \
+GameLogic/Timer/Timer.d \
+main.d
 
 OUTPUT_FILE_PATH +=EindOpdracht.elf
 
@@ -96,7 +96,7 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-Accelerometer/Accelerometer.o: ../Accelerometer/Accelerometer.c
+GameLogic/Accelerometer/Accelerometer.o: ../GameLogic/Accelerometer/Accelerometer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -110,7 +110,14 @@ GameLogic/GameLogic.o: ../GameLogic/GameLogic.c
 	@echo Finished building: $<
 	
 
-LCD/LCD.o: ../LCD/LCD.c
+GameLogic/LCD/LCD.o: ../GameLogic/LCD/LCD.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+GameLogic/Timer/Timer.o: ../GameLogic/Timer/Timer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -118,13 +125,6 @@ LCD/LCD.o: ../LCD/LCD.c
 	
 
 ./main.o: .././main.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-Timer/Timer.o: ../Timer/Timer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

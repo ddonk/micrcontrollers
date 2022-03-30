@@ -1,4 +1,5 @@
-LCD/LCD.d LCD/LCD.o: ../LCD/LCD.c ../LCD/LCD.h \
+GameLogic/LCD/LCD.d GameLogic/LCD/LCD.o: ../GameLogic/LCD/LCD.c \
+ ../GameLogic/LCD/LCD.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -15,7 +16,7 @@ LCD/LCD.d LCD/LCD.o: ../LCD/LCD.c ../LCD/LCD.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h
 
-../LCD/LCD.h:
+../GameLogic/LCD/LCD.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 

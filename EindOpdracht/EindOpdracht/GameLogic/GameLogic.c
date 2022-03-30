@@ -1,9 +1,12 @@
-#define F_CPU 8e6
-#include <avr/io.h>]
+#include <avr/io.h>
 #include <stdbool.h>
+#include "Accelerometer/Accelerometer.h"
+#include "LCD/LCD.h"
+#include <time.h>
 #include "GameLogic.h"
-#include "LCD.h"
-#include "Accelerometer.h"
+
+
+#define F_CPU 8e6
 
 // How many procent of input needs to be correct for chech of input to be correct between 1-100
 #define CORRECTPERCENTAGE 75
@@ -76,14 +79,16 @@ void GameLogic_Round()
 
     switch (dir)
     {
-    case UP || DOWN:
+    case UP:
+	case DOWN:
 
         for (int i = 0; i < BUFFERSIZE; i++)
         {
             inputbuffer[i] = accelerometer_read().x_geforce;
         }
         break;
-    case LEFT || RIGHT:
+    case LEFT
+	case RIGHT:
         for (int i = 0; i < BUFFERSIZE; i++)
         {
             inputbuffer[i] = accelerometer_read().y_geforce;

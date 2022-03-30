@@ -21,7 +21,6 @@
 #include <util/delay.h>
 
 #include <avr/interrupt.h>
-#include "LCD/LCD.h"
 #include <stdio.h>
 
 
@@ -42,20 +41,10 @@ void wait( int ms )
 int main( void )
 {
 	
-	
-	// Setup for the accelerometer
-	accelerometer_init();
-	display_init();
-
 	while (1)
 	{
 		// Reading measurement
-		accelerometer_measurment_t measurement = accelerometer_read();
-		
-		char data[20];
-		sprintf(data, "Acc: %dMG",  measurement.x_geforce);
-		display_clear();
-		display_text(data);
+	
 		
 		wait(100);
 	}
