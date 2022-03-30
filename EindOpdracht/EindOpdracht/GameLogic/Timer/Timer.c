@@ -5,6 +5,7 @@
  *  Author: berke
  */ 
 #define F_CPU 8e6
+#include <avr/interrupt.h>
 #include <avr/io.h>
 #include "Timer.h"
 
@@ -14,10 +15,12 @@ const int prescaler_values[] =
 
 void (*on_interupt)(void);
 
-ISR( TIMER1_COMPA_vect ) {
+ISR(TIMER1_COMPA_vect) {
 	on_interupt();
 	cli();
 }
+
+void setup_timer(int prescaler, int limit);
 
 void set_timer(int time_ms, void (*fun_ptr)(void)){
 	int prescaler, limit;
@@ -28,13 +31,13 @@ void set_timer(int time_ms, void (*fun_ptr)(void)){
 		// Calculating max allowed value of prescaler and if in limit then use.
 		if ((1 / TIMER_CLOCK_RATE) * prescaler_values[i] < time_ms){
 			prescaler = prescaler_values[i];
-			limit = time_ms / ((1 / TIMER_CLOCK_RATE) * prescaler_values[i]);
+			limit = (int)((float)time_ms / (((float)1 / (float)TIMER_CLOCK_RATE) * (float)prescaler_values[i]));
 		}
-
-		// Setting up all timers and other things
-		setup_timer(prescaler, limit);
-		on_interupt = fun_ptr;
 	}
+
+	// Setting up all timers and other things
+	setup_timer(prescaler, limit);
+	on_interupt = fun_ptr;
 }
 
 void setup_timer(int prescaler, int limit){
