@@ -122,34 +122,34 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="GameLogic\Accelerometer\" />
-    <Folder Include="GameLogic\LCD\" />
-    <Folder Include="GameLogic" />
-    <Folder Include="GameLogic\Timer\" />
+    <Folder Include="Game\Accelerometer" />
+    <Folder Include="Game\LCD" />
+    <Folder Include="Game" />
+    <Folder Include="Game\Timer" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameLogic\Accelerometer\Accelerometer.c">
+    <Compile Include="Game\Accelerometer\Accelerometer.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\Accelerometer\Accelerometer.h">
+    <Compile Include="Game\Accelerometer\Accelerometer.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\GameLogic.c">
+    <Compile Include="Game\GameLogic.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\GameLogic.h">
+    <Compile Include="Game\GameLogic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\LCD\LCD.c">
+    <Compile Include="Game\LCD\LCD.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\LCD\LCD.h">
+    <Compile Include="Game\LCD\LCD.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\Timer\Timer.c">
+    <Compile Include="Game\Timer\Timer.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GameLogic\Timer\Timer.h">
+    <Compile Include="Game\Timer\Timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

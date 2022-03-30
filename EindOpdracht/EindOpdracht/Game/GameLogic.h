@@ -14,4 +14,5 @@ typedef enum {
     BACKWARD,
 } DIRECTION;
 
-DIRECTION dirs[] = {UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD};
+void GameLogic_Round();
+GAMELOGIC_ERROR GameLogic_Init();

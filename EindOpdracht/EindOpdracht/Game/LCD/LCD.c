@@ -26,6 +26,7 @@ void lcd_write_data(unsigned char byte) {
 }
 
 void display_text(char *str) {
+	display_clear();
 	while (*str) {
 		lcd_write_data(*str++);
 	}

@@ -2,13 +2,13 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-GameLogic\Accelerometer\Accelerometer.c
+Game\Accelerometer\Accelerometer.c
 
-GameLogic\GameLogic.c
+Game\GameLogic.c
 
-GameLogic\LCD\LCD.c
+Game\LCD\LCD.c
 
-GameLogic\Timer\Timer.c
+Game\Timer\Timer.c
 
 main.c
 

@@ -12,7 +12,7 @@
 #define Timer_PRESCALER_COUNT 6
 #define TIMER_CLOCK_RATE 8000
 
-void setTimer(int time, void (*fun_ptr)(void));
-void abortTimer();
+void set_timer(int time_ms, void (*fun_ptr)(void));
+void abort_timer();
 
 #endif /* TIMER_H_ */
