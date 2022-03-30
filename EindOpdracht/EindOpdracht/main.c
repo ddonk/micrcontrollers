@@ -23,7 +23,7 @@
 #include <avr/interrupt.h>
 #include "LCD/LCD.h"
 #include <stdio.h>
-#include "Accelerometer/Accelerometer.h"
+
 
 #define BIT(x)	(1 << (x))
 
@@ -41,6 +41,8 @@ void wait( int ms )
 // Main program
 int main( void )
 {
+	
+	
 	// Setup for the accelerometer
 	accelerometer_init();
 	display_init();

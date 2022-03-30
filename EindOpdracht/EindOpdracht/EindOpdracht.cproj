@@ -125,6 +125,7 @@
     <Folder Include="LCD" />
     <Folder Include="Accelerometer" />
     <Folder Include="GameLogic" />
+    <Folder Include="Timer" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accelerometer\Accelerometer.c">
@@ -146,6 +147,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Timer\Timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Timer\Timer.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
