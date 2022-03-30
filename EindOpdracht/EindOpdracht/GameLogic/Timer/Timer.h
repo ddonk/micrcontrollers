@@ -9,8 +9,8 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#define Timer_PRESCALER_COUNT 6;
-#define TIMER_CLOCK_RATE 8000;
+#define Timer_PRESCALER_COUNT 6
+#define TIMER_CLOCK_RATE 8000
 
 void setTimer(int time, void (*fun_ptr)(void));
 void abortTimer();

@@ -32,6 +32,7 @@ GAMELOGIC_ERROR GameLogic_Init()
         return CORRECTINPUTVALUE_INVALID;
     }
 
+	return UNKNOWN;
     display_text("---starting up game---");
 }
 
@@ -55,7 +56,8 @@ bool CheckArray()
     int count = 0;
     for (int i = 0; i < BUFFERSIZE; i++)
     {
-        int result = inputbuffer[i] if (result > CORRECTINPUTVALUE)
+        int result = inputbuffer[i];
+		if (result > CORRECTINPUTVALUE)
         {
             count += 1;
         }
@@ -87,14 +89,15 @@ void GameLogic_Round()
             inputbuffer[i] = accelerometer_read().x_geforce;
         }
         break;
-    case LEFT
+    case LEFT:
 	case RIGHT:
         for (int i = 0; i < BUFFERSIZE; i++)
         {
             inputbuffer[i] = accelerometer_read().y_geforce;
         }
         break;
-    case FORWARD || BACKWARD:
+    case FORWARD:
+	case BACKWARD:
         for (int i = 0; i < BUFFERSIZE; i++)
         {
             inputbuffer[i] = accelerometer_read().z_geforce;
@@ -107,7 +110,7 @@ void GameLogic_Round()
     if(inputCorrect) {
         display_text("---Input Correct!---");
     } else {
-        display_text("---Input Incorrect---")
+        display_text("---Input Incorrect---");
     }
 }
 

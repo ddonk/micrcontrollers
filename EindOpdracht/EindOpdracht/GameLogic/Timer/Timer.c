@@ -4,7 +4,9 @@
  * Created: 3/23/2022 3:16:41 PM
  *  Author: berke
  */ 
-#include "Timer/Timer.h"
+#define F_CPU 8e6
+#include <avr/io.h>
+#include "Timer.h"
 
 const int prescaler_values[] = 
 	{0b000, 0b001, 0b010,
@@ -18,7 +20,7 @@ ISR( TIMER1_COMPA_vect ) {
 }
 
 void set_timer(int time_ms, void (*fun_ptr)(void)){
-	int prescaler, int limit;
+	int prescaler, limit;
 
 	// Looping through prescalers
 	for (int i = 1; i < Timer_PRESCALER_COUNT; i++)
@@ -35,7 +37,7 @@ void set_timer(int time_ms, void (*fun_ptr)(void)){
 	}
 }
 
-static void setup_timer(int prescaler, int limit){
+void setup_timer(int prescaler, int limit){
 	OCR1A = limit;					// Setting calculated limit
 	TIMSK |= (1 << 4);				// Setting on compare vect intr
 	sei();							// Turning on interupts
