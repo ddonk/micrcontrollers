@@ -19,6 +19,6 @@
 
 void display_init();
 void display_text(char *str);
-void display_set_cursor(int position);
+void display_set_cursor(int position, int line);
 void display_clear(); // Clear everything from display memory.
 void display_home(); // Reset cursor position to top left.

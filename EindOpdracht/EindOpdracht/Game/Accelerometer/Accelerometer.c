@@ -64,8 +64,9 @@ static void switch_channel(){
 // This function translates raw data to geforce.
 // Still needs some work.
 static int translate_to_geforce(int raw){
-	float fraction =  ((float)raw - (1170.0 / 2.0)) / 1170.0;
-	float scaled = fraction * 30000.0;
-	return (int) scaled;
+	//float fraction =  ((float)raw - (1170.0 / 2.0)) / 1170.0;
+	//float scaled = fraction * 30000.0;
+	//return (int) scaled;
+	return raw;
 }
 
