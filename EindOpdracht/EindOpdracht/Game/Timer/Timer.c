@@ -9,19 +9,24 @@
 #include <avr/io.h>
 #include "Timer.h"
 
+/*Prescaler values*/
 const int prescaler_values[] = 
 	{0b000, 0b001, 0b010,
 	0b011, 0b100,  0b101};
 
+/* Function pointer*/
 void (*on_interupt)(void);
 
+/* Interrupt on timer passed*/
 ISR(TIMER1_COMPA_vect) {
 	on_interupt();
 	cli();
 }
 
+/* Template for usage*/
 void setup_timer(int prescaler, int limit);
 
+/* Boots up the time and calcultes all values needed*/
 void set_timer(int time_ms, void (*fun_ptr)(void)){
 	int prescaler, limit;
 
@@ -40,6 +45,7 @@ void set_timer(int time_ms, void (*fun_ptr)(void)){
 	on_interupt = fun_ptr;
 }
 
+/* Sets up the timer base on calculation*/
 void setup_timer(int prescaler, int limit){
 	OCR1A = limit;					// Setting calculated limit
 	TIMSK |= (1 << 4);				// Setting on compare vect intr
@@ -48,6 +54,7 @@ void setup_timer(int prescaler, int limit){
 	TCCR1B |= prescaler;			// Setting new prescaler
 }
 
+/*Aborts the timer*/
 void abort_timer(){
 	cli();
 }

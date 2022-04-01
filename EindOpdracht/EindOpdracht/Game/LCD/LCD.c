@@ -6,10 +6,11 @@
  */ 
 #include "LCD.h"
 
+/*Costum chars*/
 unsigned char fullheart[8] = {0x00,0x0A,0x1F,0x1F,0x0E,0x04,0x00,0x00};
 unsigned char emptyheart[8] = {0x00,0x0A,0x15,0x11,0x0A,0x04,0x00,0x00};
 
-
+// Says a transimssion is coming in.
 void switch_E() {
 	PORTC |= (1<<E);
 	_delay_ms(1);
@@ -18,7 +19,7 @@ void switch_E() {
 }
 
 
-
+// Writes data to the screen.
 void lcd_write_data(unsigned char byte) {
 	// First nibble.
 	PORTC = byte;
@@ -31,12 +32,14 @@ void lcd_write_data(unsigned char byte) {
 	switch_E();
 }
 
+/*Prints a string to the display*/
 void display_text(char *str) {
 	while (*str) {
 		lcd_write_data(*str++);
 	}
 }
 
+// Writes a command to the display
 void lcd_write_command(unsigned char byte)
 {
 	// First nibble.
@@ -51,7 +54,7 @@ void lcd_write_command(unsigned char byte)
 }
 
 
-// 0x0c for turning cursor of.
+// Places the cursor.
 void display_set_cursor(int position, int line) {
 	if (line == 0){
 		lcd_write_command((position * 0x1) + 0x80);
@@ -68,6 +71,7 @@ void display_clear(){
 	lcd_write_command(0x80);
 }
 
+// This function is used for putting custom chars in ram of the display
 void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
 {
 	unsigned char i;
@@ -79,6 +83,8 @@ void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
 	}
 	display_clear();
 }
+
+// This function is used for bootup up the lcd
 void display_init() {
 	// See table 13 from the HD44780U datasheet.
 	DDRC = 0xFF;

@@ -11,18 +11,26 @@
 
 #define F_CPU 8e6
 
-// How many procent of input needs to be correct for chech of input to be correct between 1-100
+// Percentage of input to be correct (1-100)
 #define CORRECTTHRESHOLD 10
+
+// Defines how much is counted as moving.
 #define MEASURMENT_OFSETT 2
 
+// Possible direction
 DIRECTION directions[] = {UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD};
+	
+// Calibration measurement 
+accelerometer_measurment_t TRESHOLD_MEASURMENT;
+
+/** Game logic variables **/
 bool isroundstarted = false;
 bool isgamestarted = false;
 int correctCount;
 int totalCount;
 int totalScore;
-accelerometer_measurment_t TRESHOLD_MEASURMENT;
 int lives_left = 3;
+
 
 // wait(): busy waiting for 'ms' millisecond
 // Used library: util/delay.h
@@ -34,6 +42,7 @@ void wait( int ms )
 	}
 }
 
+/* This function is used for initing the game*/
 GAMELOGIC_ERROR GameLogic_Init()
 {
 	display_init();
@@ -49,6 +58,7 @@ GAMELOGIC_ERROR GameLogic_Init()
 	return UNKNOWN;
 }
 
+/* This function is used for generating random numbers from noise*/
 int randomNumber()
 {
     int rand_num;
@@ -59,15 +69,18 @@ int randomNumber()
     return rand_num;
 }
 
+/* This function generates a random direction*/
 DIRECTION randomDirection()
 {
     return directions[randomNumber()];
 }
 
+/* This is a funtion called by the interrupt of the timer and kills the loop of the game.*/
 void time_passed(){
 	isroundstarted = false;
 }
 
+/* Draws the hearts on the screen based on the score*/
 void GameLogic_draw_hearts(){
 	// Setting logic for numbers
 	char lives[3];
@@ -91,6 +104,7 @@ void GameLogic_draw_hearts(){
 	display_text(lives);
 }
 
+/*Draws the direction on the screen based on the input of dir*/
 void GameLogic_Draw_Dir(DIRECTION dir){
 	display_clear();
 	switch (dir)
@@ -116,6 +130,7 @@ void GameLogic_Draw_Dir(DIRECTION dir){
 	}
 }
 
+/*This function is called in a loop and executes a game round*/
 void GameLogic_Round()
 {
 	// Setup of handling
@@ -177,9 +192,11 @@ void GameLogic_Round()
 		wait(100);
 	}
 	
+	// Checking score
 	float percentage = ((float)correctCount / (float)totalCount) * 100.0;
     bool inputCorrect = (int)percentage > CORRECTTHRESHOLD;
 
+	// Displaying score or lives
 	display_clear();
 	display_set_cursor(0,1);
     if(inputCorrect) {
@@ -206,13 +223,13 @@ void GameLogic_Round()
 		}
     }
 	
+	// Reseting things
 	correctCount = 0;
-	totalCount = 0;
-					
+	totalCount = 0;		
 	GameLogic_draw_hearts();
 
 
-
+	// Waiting a sec
 	wait(1000);
 }
 

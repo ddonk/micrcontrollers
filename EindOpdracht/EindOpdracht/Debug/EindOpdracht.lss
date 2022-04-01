@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000e08  00000000  00000000  00002f12  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000c1e  00000000  00000000  00003d1a  2**0
+  8 .debug_line   00000c1f  00000000  00000000  00003d1a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000036c  00000000  00000000  00004938  2**2
+  9 .debug_frame  0000036c  00000000  00000000  0000493c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000085b  00000000  00000000  00004ca4  2**0
+ 10 .debug_str    0000085b  00000000  00000000  00004ca8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000009b8  00000000  00000000  000054ff  2**0
+ 11 .debug_loc    000009b8  00000000  00000000  00005503  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000110  00000000  00000000  00005eb7  2**0
+ 12 .debug_ranges 00000110  00000000  00000000  00005ebb  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -147,68 +147,117 @@ Disassembly of section .text:
       c8:	9b cf       	rjmp	.-202    	; 0x0 <__vectors>
 
 000000ca <switch_channel>:
+}
+
+// This function changes the channel of the accelerometer.
+static void switch_channel(){
+	static int channel = -1;
+	if (channel == -1){
       ca:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <channel.1627>
       ce:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <channel.1627+0x1>
       d2:	8f 3f       	cpi	r24, 0xFF	; 255
       d4:	2f ef       	ldi	r18, 0xFF	; 255
       d6:	92 07       	cpc	r25, r18
       d8:	39 f4       	brne	.+14     	; 0xe8 <switch_channel+0x1e>
+		channel = 3;
       da:	83 e0       	ldi	r24, 0x03	; 3
       dc:	90 e0       	ldi	r25, 0x00	; 0
       de:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <channel.1627+0x1>
       e2:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <channel.1627>
       e6:	0d c0       	rjmp	.+26     	; 0x102 <switch_channel+0x38>
+		} else {
+		channel++;
       e8:	01 96       	adiw	r24, 0x01	; 1
       ea:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <channel.1627+0x1>
       ee:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <channel.1627>
+		if (channel > 5){
       f2:	06 97       	sbiw	r24, 0x06	; 6
       f4:	34 f0       	brlt	.+12     	; 0x102 <switch_channel+0x38>
+			channel = 3;
       f6:	83 e0       	ldi	r24, 0x03	; 3
       f8:	90 e0       	ldi	r25, 0x00	; 0
       fa:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <channel.1627+0x1>
       fe:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <channel.1627>
+		}
+	}
+	// Clearing
+	int temporary =  0b11000000;
+	temporary |= channel;
      102:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <channel.1627>
      106:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <channel.1627+0x1>
      10a:	80 6c       	ori	r24, 0xC0	; 192
+	
+	// Adding
+	ADMUX = temporary;
      10c:	87 b9       	out	0x07, r24	; 7
      10e:	08 95       	ret
 
 00000110 <translate_to_geforce>:
+static int translate_to_geforce(int raw){
+	//float fraction =  ((float)raw - (1170.0 / 2.0)) / 1170.0;
+	//float scaled = fraction * 30000.0;
+	//return (int) scaled;
+	return raw;
+}
      110:	08 95       	ret
 
 00000112 <read_acc_direction>:
+	
+	return measurment;
+}
+
+// Reads one channel at a time.
+static void read_acc_direction(int* ptr){
      112:	cf 93       	push	r28
      114:	df 93       	push	r29
      116:	ec 01       	movw	r28, r24
+	switch_channel();
      118:	d8 df       	rcall	.-80     	; 0xca <switch_channel>
+	ADCSRA |= BIT(6);
      11a:	86 b1       	in	r24, 0x06	; 6
      11c:	80 64       	ori	r24, 0x40	; 64
      11e:	86 b9       	out	0x06, r24	; 6
+	while(ADCSRA & BIT(6));
      120:	36 99       	sbic	0x06, 6	; 6
      122:	fe cf       	rjmp	.-4      	; 0x120 <read_acc_direction+0xe>
+	int value = ADCL + (ADCH<<8);
      124:	24 b1       	in	r18, 0x04	; 4
      126:	85 b1       	in	r24, 0x05	; 5
      128:	90 e0       	ldi	r25, 0x00	; 0
      12a:	98 2f       	mov	r25, r24
      12c:	88 27       	eor	r24, r24
+	*ptr = translate_to_geforce(value);
      12e:	82 0f       	add	r24, r18
      130:	91 1d       	adc	r25, r1
      132:	ee df       	rcall	.-36     	; 0x110 <translate_to_geforce>
      134:	99 83       	std	Y+1, r25	; 0x01
      136:	88 83       	st	Y, r24
+}
      138:	df 91       	pop	r29
      13a:	cf 91       	pop	r28
      13c:	08 95       	ret
 
 0000013e <accelerometer_init>:
+static void switch_channel();
+static int translate_to_geforce(int raw);
+
+
+void accelerometer_init(){
+	DDRF = 0x00;				// Setting ADC pins to input.
      13e:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <__TEXT_REGION_LENGTH__+0x7e0061>
+	ADMUX = 0b11000000;			// AREF=VCC, result left adjusted, channel1 at pin PF1
      142:	80 ec       	ldi	r24, 0xC0	; 192
      144:	87 b9       	out	0x07, r24	; 7
+	ADCSRA = 0b10000110;		// ADC-enable, no interrupt, start, free running, division by 64
      146:	86 e8       	ldi	r24, 0x86	; 134
      148:	86 b9       	out	0x06, r24	; 6
      14a:	08 95       	ret
 
 0000014c <accelerometer_read>:
+}
+
+// Reads the accelerometer.
+accelerometer_measurment_t accelerometer_read(){
      14c:	cf 93       	push	r28
      14e:	df 93       	push	r29
      150:	cd b7       	in	r28, 0x3d	; 61
@@ -219,15 +268,23 @@ Disassembly of section .text:
      15a:	de bf       	out	0x3e, r29	; 62
      15c:	0f be       	out	0x3f, r0	; 63
      15e:	cd bf       	out	0x3d, r28	; 61
+	accelerometer_measurment_t measurment;
+	
+	// Reading all values
+	read_acc_direction(&measurment.x_geforce);
      160:	ce 01       	movw	r24, r28
      162:	07 96       	adiw	r24, 0x07	; 7
      164:	d6 df       	rcall	.-84     	; 0x112 <read_acc_direction>
+	read_acc_direction(&measurment.y_geforce);
      166:	ce 01       	movw	r24, r28
      168:	09 96       	adiw	r24, 0x09	; 9
      16a:	d3 df       	rcall	.-90     	; 0x112 <read_acc_direction>
+	read_acc_direction(&measurment.z_geforce);
      16c:	ce 01       	movw	r24, r28
      16e:	0b 96       	adiw	r24, 0x0b	; 11
      170:	d0 df       	rcall	.-96     	; 0x112 <read_acc_direction>
+	
+	return measurment;
      172:	86 e0       	ldi	r24, 0x06	; 6
      174:	fe 01       	movw	r30, r28
      176:	37 96       	adiw	r30, 0x07	; 7
@@ -243,6 +300,7 @@ Disassembly of section .text:
      18a:	5c 81       	ldd	r21, Y+4	; 0x04
      18c:	6d 81       	ldd	r22, Y+5	; 0x05
      18e:	7e 81       	ldd	r23, Y+6	; 0x06
+}
      190:	80 e0       	ldi	r24, 0x00	; 0
      192:	90 e0       	ldi	r25, 0x00	; 0
      194:	2c 96       	adiw	r28, 0x0c	; 12
@@ -256,10 +314,10 @@ Disassembly of section .text:
      1a4:	08 95       	ret
 
 000001a6 <time_passed>:
-{
     return directions[randomNumber()];
 }
 
+/* This is a funtion called by the interrupt of the timer and kills the loop of the game.*/
 void time_passed(){
 	isroundstarted = false;
      1a6:	10 92 ca 01 	sts	0x01CA, r1	; 0x8001ca <__data_end>
@@ -300,6 +358,7 @@ void wait( int ms )
 
 000001ca <GameLogic_Init>:
 
+/* This function is used for initing the game*/
 GAMELOGIC_ERROR GameLogic_Init()
 {
 	display_init();
@@ -344,6 +403,7 @@ GAMELOGIC_ERROR GameLogic_Init()
 0000020a <randomNumber>:
      20a:	ef 92       	push	r14
 
+/* This function is used for generating random numbers from noise*/
 int randomNumber()
 {
      20c:	ff 92       	push	r15
@@ -419,6 +479,7 @@ int randomNumber()
      286:	c1 df       	rcall	.-126    	; 0x20a <randomNumber>
      288:	88 5f       	subi	r24, 0xF8	; 248
 
+/* This function generates a random direction*/
 DIRECTION randomDirection()
 {
     return directions[randomNumber()];
@@ -429,11 +490,11 @@ DIRECTION randomDirection()
      290:	08 95       	ret
 
 00000292 <GameLogic_draw_hearts>:
-
 void time_passed(){
 	isroundstarted = false;
 }
 
+/* Draws the hearts on the screen based on the score*/
 void GameLogic_draw_hearts(){
      292:	ef 92       	push	r14
      294:	ff 92       	push	r15
@@ -452,8 +513,8 @@ void GameLogic_draw_hearts(){
 	for (int i = 3; i> 0; i-- )
      2a6:	03 e0       	ldi	r16, 0x03	; 3
      2a8:	10 e0       	ldi	r17, 0x00	; 0
-}
 
+/* Draws the hearts on the screen based on the score*/
 void GameLogic_draw_hearts(){
 	// Setting logic for numbers
 	char lives[3];
@@ -543,6 +604,7 @@ void GameLogic_draw_hearts(){
 
 00000320 <GameLogic_Draw_Dir>:
 
+/*Draws the direction on the screen based on the input of dir*/
 void GameLogic_Draw_Dir(DIRECTION dir){
      320:	cf 93       	push	r28
      322:	c8 2f       	mov	r28, r24
@@ -612,6 +674,7 @@ void GameLogic_Draw_Dir(DIRECTION dir){
 
 00000374 <GameLogic_Round>:
 
+/*This function is called in a loop and executes a game round*/
 void GameLogic_Round()
 {
      374:	8f 92       	push	r8
@@ -880,11 +943,11 @@ void GameLogic_Round()
 	while(isroundstarted) {
      562:	81 11       	cpse	r24, r1
      564:	2b cf       	rjmp	.-426    	; 0x3bc <GameLogic_Round+0x48>
-		}
 		totalCount++;
 		wait(100);
 	}
 	
+	// Checking score
 	float percentage = ((float)correctCount / (float)totalCount) * 100.0;
      566:	60 91 d3 01 	lds	r22, 0x01D3	; 0x8001d3 <correctCount>
      56a:	70 91 d4 01 	lds	r23, 0x01D4	; 0x8001d4 <correctCount+0x1>
@@ -914,6 +977,7 @@ void GameLogic_Round()
      59e:	52 e4       	ldi	r21, 0x42	; 66
      5a0:	cb d2       	rcall	.+1430   	; 0xb38 <__mulsf3>
 
+	// Displaying score or lives
 	display_clear();
      5a2:	0b d2       	rcall	.+1046   	; 0x9ba <__fixsfsi>
      5a4:	7b 01       	movw	r14, r22
@@ -1013,24 +1077,23 @@ void GameLogic_Round()
      65a:	10 92 d5 01 	sts	0x01D5, r1	; 0x8001d5 <totalCount>
      65e:	0c c0       	rjmp	.+24     	; 0x678 <__LOCK_REGION_LENGTH__+0x278>
      660:	10 92 d4 01 	sts	0x01D4, r1	; 0x8001d4 <correctCount+0x1>
-
 			return;
 		}
     }
 	
+	// Reseting things
 	correctCount = 0;
      664:	10 92 d3 01 	sts	0x01D3, r1	; 0x8001d3 <correctCount>
      668:	10 92 d6 01 	sts	0x01D6, r1	; 0x8001d6 <totalCount+0x1>
-	totalCount = 0;
+	totalCount = 0;		
      66c:	10 92 d5 01 	sts	0x01D5, r1	; 0x8001d5 <totalCount>
      670:	10 de       	rcall	.-992    	; 0x292 <GameLogic_draw_hearts>
-					
 	GameLogic_draw_hearts();
      672:	88 ee       	ldi	r24, 0xE8	; 232
      674:	93 e0       	ldi	r25, 0x03	; 3
 
 
-
+	// Waiting a sec
 	wait(1000);
      676:	9a dd       	rcall	.-1228   	; 0x1ac <wait>
      678:	c6 59       	subi	r28, 0x96	; 150
@@ -1059,7 +1122,7 @@ void GameLogic_Round()
 unsigned char fullheart[8] = {0x00,0x0A,0x1F,0x1F,0x0E,0x04,0x00,0x00};
 unsigned char emptyheart[8] = {0x00,0x0A,0x15,0x11,0x0A,0x04,0x00,0x00};
 
-
+// Says a transimssion is coming in.
 void switch_E() {
 	PORTC |= (1<<E);
      6a0:	85 b3       	in	r24, 0x15	; 21
@@ -1089,7 +1152,7 @@ void switch_E() {
 }
 
 
-
+// Writes data to the screen.
 void lcd_write_data(unsigned char byte) {
      6c6:	cf 93       	push	r28
      6c8:	c8 2f       	mov	r28, r24
@@ -1120,6 +1183,7 @@ void lcd_write_data(unsigned char byte) {
 
 000006e6 <display_text>:
 
+/*Prints a string to the display*/
 void display_text(char *str) {
      6e6:	cf 93       	push	r28
      6e8:	df 93       	push	r29
@@ -1129,10 +1193,10 @@ void display_text(char *str) {
 		lcd_write_data(*str++);
      6ee:	21 96       	adiw	r28, 0x01	; 1
      6f0:	ea df       	rcall	.-44     	; 0x6c6 <lcd_write_data>
-	PORTC |= (1<<RS);
 	switch_E();
 }
 
+/*Prints a string to the display*/
 void display_text(char *str) {
 	while (*str) {
      6f2:	88 81       	ld	r24, Y
@@ -1147,6 +1211,7 @@ void display_text(char *str) {
 
 000006fe <lcd_write_command>:
 
+// Writes a command to the display
 void lcd_write_command(unsigned char byte)
 {
      6fe:	cf 93       	push	r28
@@ -1179,7 +1244,7 @@ void lcd_write_command(unsigned char byte)
 0000071e <display_set_cursor>:
 
 
-// 0x0c for turning cursor of.
+// Places the cursor.
 void display_set_cursor(int position, int line) {
 	if (line == 0){
      71e:	67 2b       	or	r22, r23
@@ -1231,6 +1296,7 @@ void display_clear(){
 0000075c <LCD_Custom_Char>:
 }
 
+// This function is used for putting custom chars in ram of the display
 void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
 {
      75c:	0f 93       	push	r16
@@ -1278,6 +1344,8 @@ void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
      790:	08 95       	ret
 
 00000792 <display_init>:
+
+// This function is used for bootup up the lcd
 void display_init() {
      792:	cf 93       	push	r28
 	// See table 13 from the HD44780U datasheet.
@@ -1350,6 +1418,12 @@ void display_init() {
      7d8:	08 95       	ret
 
 000007da <__vector_12>:
+
+/* Function pointer*/
+void (*on_interupt)(void);
+
+/* Interrupt on timer passed*/
+ISR(TIMER1_COMPA_vect) {
      7da:	1f 92       	push	r1
      7dc:	0f 92       	push	r0
      7de:	0f b6       	in	r0, 0x3f	; 63
@@ -1369,10 +1443,13 @@ void display_init() {
      7fa:	bf 93       	push	r27
      7fc:	ef 93       	push	r30
      7fe:	ff 93       	push	r31
+	on_interupt();
      800:	e0 91 d7 01 	lds	r30, 0x01D7	; 0x8001d7 <on_interupt>
      804:	f0 91 d8 01 	lds	r31, 0x01D8	; 0x8001d8 <on_interupt+0x1>
      808:	09 95       	icall
+	cli();
      80a:	f8 94       	cli
+}
      80c:	ff 91       	pop	r31
      80e:	ef 91       	pop	r30
      810:	bf 91       	pop	r27
@@ -1394,20 +1471,36 @@ void display_init() {
      830:	18 95       	reti
 
 00000832 <setup_timer>:
+	on_interupt = fun_ptr;
+}
+
+/* Sets up the timer base on calculation*/
+void setup_timer(int prescaler, int limit){
+	OCR1A = limit;					// Setting calculated limit
      832:	7b bd       	out	0x2b, r23	; 43
      834:	6a bd       	out	0x2a, r22	; 42
+	TIMSK |= (1 << 4);				// Setting on compare vect intr
      836:	97 b7       	in	r25, 0x37	; 55
      838:	90 61       	ori	r25, 0x10	; 16
      83a:	97 bf       	out	0x37, r25	; 55
+	sei();							// Turning on interupts
      83c:	78 94       	sei
+	TCCR1B |= prescaler_values[0];	// Clearing prescaler
      83e:	9e b5       	in	r25, 0x2e	; 46
      840:	9e bd       	out	0x2e, r25	; 46
+	TCCR1B |= prescaler;			// Setting new prescaler
      842:	9e b5       	in	r25, 0x2e	; 46
      844:	89 2b       	or	r24, r25
      846:	8e bd       	out	0x2e, r24	; 46
      848:	08 95       	ret
 
 0000084a <set_timer>:
+
+/* Template for usage*/
+void setup_timer(int prescaler, int limit);
+
+/* Boots up the time and calcultes all values needed*/
+void set_timer(int time_ms, void (*fun_ptr)(void)){
      84a:	8f 92       	push	r8
      84c:	9f 92       	push	r9
      84e:	af 92       	push	r10
@@ -1422,12 +1515,20 @@ void display_init() {
      860:	df 93       	push	r29
      862:	8c 01       	movw	r16, r24
      864:	6b 01       	movw	r12, r22
+	int prescaler, limit;
+
+	// Looping through prescalers
+	for (int i = 1; i < Timer_PRESCALER_COUNT; i++)
      866:	c1 e0       	ldi	r28, 0x01	; 1
      868:	d0 e0       	ldi	r29, 0x00	; 0
      86a:	25 c0       	rjmp	.+74     	; 0x8b6 <set_timer+0x6c>
+	{
+		// Calculating max allowed value of prescaler and if in limit then use.
+		if ((1 / TIMER_CLOCK_RATE) * prescaler_values[i] < time_ms){
      86c:	10 16       	cp	r1, r16
      86e:	11 06       	cpc	r1, r17
      870:	0c f5       	brge	.+66     	; 0x8b4 <set_timer+0x6a>
+			prescaler = prescaler_values[i];
      872:	fe 01       	movw	r30, r28
      874:	ee 0f       	add	r30, r30
      876:	ff 1f       	adc	r31, r31
@@ -1435,6 +1536,7 @@ void display_init() {
      87a:	fe 4f       	sbci	r31, 0xFE	; 254
      87c:	e0 80       	ld	r14, Z
      87e:	f1 80       	ldd	r15, Z+1	; 0x01
+			limit = (int)((float)time_ms / (((float)1 / (float)TIMER_CLOCK_RATE) * (float)prescaler_values[i]));
      880:	b8 01       	movw	r22, r16
      882:	01 2e       	mov	r0, r17
      884:	00 0c       	add	r0, r0
@@ -1461,15 +1563,29 @@ void display_init() {
      8ae:	1d d0       	rcall	.+58     	; 0x8ea <__divsf3>
      8b0:	84 d0       	rcall	.+264    	; 0x9ba <__fixsfsi>
      8b2:	9b 01       	movw	r18, r22
+/* Boots up the time and calcultes all values needed*/
+void set_timer(int time_ms, void (*fun_ptr)(void)){
+	int prescaler, limit;
+
+	// Looping through prescalers
+	for (int i = 1; i < Timer_PRESCALER_COUNT; i++)
      8b4:	21 96       	adiw	r28, 0x01	; 1
      8b6:	c6 30       	cpi	r28, 0x06	; 6
      8b8:	d1 05       	cpc	r29, r1
+			limit = (int)((float)time_ms / (((float)1 / (float)TIMER_CLOCK_RATE) * (float)prescaler_values[i]));
+		}
+	}
+
+	// Setting up all timers and other things
+	setup_timer(prescaler, limit);
      8ba:	c4 f2       	brlt	.-80     	; 0x86c <set_timer+0x22>
      8bc:	b9 01       	movw	r22, r18
      8be:	c7 01       	movw	r24, r14
      8c0:	b8 df       	rcall	.-144    	; 0x832 <setup_timer>
+	on_interupt = fun_ptr;
      8c2:	d0 92 d8 01 	sts	0x01D8, r13	; 0x8001d8 <on_interupt+0x1>
      8c6:	c0 92 d7 01 	sts	0x01D7, r12	; 0x8001d7 <on_interupt>
+}
      8ca:	df 91       	pop	r29
      8cc:	cf 91       	pop	r28
      8ce:	1f 91       	pop	r17
@@ -1485,17 +1601,7 @@ void display_init() {
      8e2:	08 95       	ret
 
 000008e4 <main>:
-
-
-// Main program
-int main( void )
-{
-	GameLogic_Init();
      8e4:	72 dc       	rcall	.-1820   	; 0x1ca <GameLogic_Init>
-	while (1)
-	{
-		// Reading measurement
-		GameLogic_Round();
      8e6:	46 dd       	rcall	.-1396   	; 0x374 <GameLogic_Round>
      8e8:	fe cf       	rjmp	.-4      	; 0x8e6 <main+0x2>
 
