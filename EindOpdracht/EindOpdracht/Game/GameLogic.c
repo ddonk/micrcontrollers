@@ -198,13 +198,19 @@ void GameLogic_Round()
 			display_set_cursor(0,1);
 			display_text("Press PA7...");
 			while(PINA != 0b10000000);
+			
+			correctCount = 0;
+			totalCount = 0;
+
+			return;
 		}
     }
-	GameLogic_draw_hearts();
-
-
+	
 	correctCount = 0;
 	totalCount = 0;
+					
+	GameLogic_draw_hearts();
+
 
 
 	wait(1000);
