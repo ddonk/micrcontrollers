@@ -6,8 +6,8 @@
  */ 
 #include "LCD.h"
 
-char fullheart[] = {0x00,0x0A,0x1F,0x1F,0x0E,0x04,0x00,0x00};
-char emptyheart[] = {0x00,0x00,0x0a,0x15,0x11,0x0a,0x04,0x00};
+unsigned char fullheart[8] = {0x00,0x0A,0x1F,0x1F,0x0E,0x04,0x00,0x00};
+unsigned char emptyheart[8] = {0x00,0x00,0x0a,0x15,0x11,0x0a,0x04,0x00};
 
 
 void switch_E() {
@@ -77,6 +77,7 @@ void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
 		for(i=0;i<8;i++)	/* Write 8 byte for generation of 1 character */
 		lcd_write_data(msg[i]);
 	}
+	display_clear();
 }
 void display_init() {
 	// See table 13 from the HD44780U datasheet.
@@ -106,9 +107,8 @@ void display_init() {
 	switch_E();
 	
 	// Set cursor to position 0 on first row.
-	display_clear();
 	lcd_write_command(0x02);
-	unsigned char Character6[9] = { 0x0A, 0x0A, 0x1F, 0x11, 0x11, 0x0E, 0x04, 0x04 };
-	LCD_Custom_Char(0, fullheart);
-	lcd_write_data(0);
+	
+	unsigned char Character6[8] = { 0x0A, 0x0A, 0x1F, 0x11, 0x11, 0x0E, 0x04, 0x04 };
+	LCD_Custom_Char(1, fullheart);
 }
