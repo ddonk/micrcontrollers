@@ -107,6 +107,7 @@ void display_init() {
 	switch_E();
 	
 	// Set cursor to position 0 on first row.
+	lcd_write_command(0x0c);
 	lcd_write_command(0x02);
 
 	// Adding custom chars

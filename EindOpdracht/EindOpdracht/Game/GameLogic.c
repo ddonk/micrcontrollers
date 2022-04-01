@@ -20,6 +20,7 @@ bool isroundstarted = false;
 bool isgamestarted = false;
 int correctCount;
 int totalCount;
+int totalScore;
 accelerometer_measurment_t TRESHOLD_MEASURMENT;
 int lives_left = 3;
 
@@ -37,10 +38,13 @@ GAMELOGIC_ERROR GameLogic_Init()
 {
 	display_init();
 	accelerometer_init();
-
-	TRESHOLD_MEASURMENT = accelerometer_read();
+	
+	DDRA = 0x0;
 	display_text("Starting up game");
-	wait(500);
+	display_set_cursor(0,1);
+	display_text("Press PA7...");
+	while(PINA != 0b10000000);//Waiting to press button
+	TRESHOLD_MEASURMENT = accelerometer_read();
 	
 	return UNKNOWN;
 }
@@ -180,21 +184,28 @@ void GameLogic_Round()
 	display_set_cursor(0,1);
     if(inputCorrect) {
 	    display_text(" Input Correct! ");
+		totalScore++;
 	} else {
 	    display_text("Input Incorrect!");
 		lives_left--;
 		if(lives_left <= 0) {
-			wait(500);
 			display_clear();
-			display_text("Game Over!");
+			char gameoverString[20];
+			sprintf(gameoverString, "Game Over! S:%d", totalScore);
 			lives_left = 3;
-			wait(500);
+			totalScore = 0;
+			display_text(gameoverString);
+			display_set_cursor(0,1);
+			display_text("Press PA7...");
+			while(PINA != 0b10000000);
 		}
     }
 	GameLogic_draw_hearts();
 
+
 	correctCount = 0;
 	totalCount = 0;
+
 
 	wait(1000);
 }
