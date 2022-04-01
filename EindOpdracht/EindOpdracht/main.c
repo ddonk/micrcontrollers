@@ -32,6 +32,6 @@ int main( void )
 	while (1)
 	{
 		// Reading measurement
-		//GameLogic_Round();
+		GameLogic_Round();
 	}
 }

@@ -7,7 +7,7 @@
 #include "LCD.h"
 
 unsigned char fullheart[8] = {0x00,0x0A,0x1F,0x1F,0x0E,0x04,0x00,0x00};
-unsigned char emptyheart[8] = {0x00,0x00,0x0a,0x15,0x11,0x0a,0x04,0x00};
+unsigned char emptyheart[8] = {0x00,0x0A,0x15,0x11,0x0A,0x04,0x00,0x00};
 
 
 void switch_E() {
@@ -110,6 +110,6 @@ void display_init() {
 	lcd_write_command(0x02);
 
 	// Adding custom chars
-	LCD_Custom_Char(0, fullheart);
-	LCD_Custom_Char(1, emptyheart);
+	LCD_Custom_Char(1, fullheart);
+	LCD_Custom_Char(2, emptyheart);
 }

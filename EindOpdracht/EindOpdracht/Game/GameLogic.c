@@ -16,7 +16,8 @@
 #define MEASURMENT_OFSETT 2
 
 DIRECTION directions[] = {UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD};
-bool reading = false;
+bool isroundstarted = false;
+bool isgamestarted = false;
 int correctCount;
 int totalCount;
 accelerometer_measurment_t TRESHOLD_MEASURMENT;
@@ -38,7 +39,8 @@ GAMELOGIC_ERROR GameLogic_Init()
 	accelerometer_init();
 
 	TRESHOLD_MEASURMENT = accelerometer_read();
-	display_text("---starting up game---");
+	display_text("Starting up game");
+	wait(500);
 	
 	return UNKNOWN;
 }
@@ -59,25 +61,25 @@ DIRECTION randomDirection()
 }
 
 void time_passed(){
-	reading = false;
+	isroundstarted = false;
 }
 
 void GameLogic_draw_hearts(){
 	// Setting logic for numbers
 	char lives[3];
-	int cursor_pos = 16;
-	
+	int cursor_pos = 15;
+
 	for (int i = 3; i> 0; i-- )
 	{
 		// Setting correct cursor pos
 		display_set_cursor(cursor_pos, 0);
 		cursor_pos--;
 		
-		// Setting hears
-		if (i == lives_left){
-			lives[i-1] = 0;
-		} else {
+		// Setting hearts
+		if (i <= lives_left){
 			lives[i-1] = 1;
+		} else {
+			lives[i-1] = 2;
 		}
 	}
 	
@@ -115,13 +117,13 @@ void GameLogic_Round()
 	// Setup of handling
     DIRECTION dir = randomDirection();
 	set_timer(2000, time_passed);
-	reading = true;
-	//GameLogic_Draw_Dir(dir);
+	isroundstarted = true;
 	display_clear();
+	GameLogic_Draw_Dir(dir);
 	GameLogic_draw_hearts();
 
 	// Starting handling
-	while(reading) {
+	while(isroundstarted) {
 		accelerometer_measurment_t measurement = accelerometer_read();
 		display_set_cursor(0, 1);
 		char debugout[100];
@@ -129,7 +131,6 @@ void GameLogic_Round()
 		display_text(debugout);
 		switch (dir)
 		{
-
 			case UP:
 				if(measurement.z_geforce <= TRESHOLD_MEASURMENT.z_geforce - MEASURMENT_OFSETT)
 				{
@@ -176,11 +177,19 @@ void GameLogic_Round()
     bool inputCorrect = (int)percentage > CORRECTTHRESHOLD;
 
 	display_clear();
+	display_set_cursor(0,1);
     if(inputCorrect) {
 	    display_text(" Input Correct! ");
 	} else {
 	    display_text("Input Incorrect!");
 		lives_left--;
+		if(lives_left <= 0) {
+			wait(500);
+			display_clear();
+			display_text("Game Over!");
+			lives_left = 3;
+			wait(500);
+		}
     }
 	GameLogic_draw_hearts();
 
