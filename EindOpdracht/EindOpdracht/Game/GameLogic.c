@@ -35,12 +35,12 @@ void wait( int ms )
 GAMELOGIC_ERROR GameLogic_Init()
 {
 	display_init();
-	//accelerometer_init();
-//
-	//TRESHOLD_MEASURMENT = accelerometer_read();
-//
-	//return UNKNOWN;
-    //display_text("---starting up game---");
+	accelerometer_init();
+
+	TRESHOLD_MEASURMENT = accelerometer_read();
+	display_text("---starting up game---");
+	
+	return UNKNOWN;
 }
 
 int randomNumber()
@@ -63,19 +63,26 @@ void time_passed(){
 }
 
 void GameLogic_draw_hearts(){
-	char hearts[] = {1}; 
-
-	display_text(hearts);
-	//if (lives_left == 3){
-		//
-	//} else if (lives_left == 2)
-	//{
-		//
-	//} else if (lives_left == 1)
-	//{
-	//} else {
-//
-	//}
+	// Setting logic for numbers
+	char lives[3];
+	int cursor_pos = 16;
+	
+	for (int i = 3; i> 0; i-- )
+	{
+		// Setting correct cursor pos
+		display_set_cursor(cursor_pos, 0);
+		cursor_pos--;
+		
+		// Setting hears
+		if (i == lives_left){
+			lives[i-1] = 0;
+		} else {
+			lives[i-1] = 1;
+		}
+	}
+	
+	// Displaying hearts
+	display_text(lives);
 }
 
 void GameLogic_Draw_Dir(DIRECTION dir){
@@ -171,7 +178,7 @@ void GameLogic_Round()
 	display_clear();
     if(inputCorrect) {
 	    display_text(" Input Correct! ");
-	    } else {
+	} else {
 	    display_text("Input Incorrect!");
 		lives_left--;
     }

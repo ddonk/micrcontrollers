@@ -108,7 +108,8 @@ void display_init() {
 	
 	// Set cursor to position 0 on first row.
 	lcd_write_command(0x02);
-	
-	unsigned char Character6[8] = { 0x0A, 0x0A, 0x1F, 0x11, 0x11, 0x0E, 0x04, 0x04 };
-	LCD_Custom_Char(1, fullheart);
+
+	// Adding custom chars
+	LCD_Custom_Char(0, fullheart);
+	LCD_Custom_Char(1, emptyheart);
 }
