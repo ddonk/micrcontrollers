@@ -20,10 +20,10 @@
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>
     <ProgFlashFromRam>true</ProgFlashFromRam>
-    <RamSnippetAddress />
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
     <UncachedRange />
     <preserveEEPROM>true</preserveEEPROM>
-    <OverrideVtorValue />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
     <ResetRule>0</ResetRule>
     <eraseonlaunchrule>0</eraseonlaunchrule>
@@ -122,20 +122,34 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="LCD" />
-    <Folder Include="Accelerometer" />
+    <Folder Include="Game\Accelerometer" />
+    <Folder Include="Game\LCD" />
+    <Folder Include="Game" />
+    <Folder Include="Game\Timer" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accelerometer\Accelerometer.c">
+    <Compile Include="Game\Accelerometer\Accelerometer.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Accelerometer\Accelerometer.h">
+    <Compile Include="Game\Accelerometer\Accelerometer.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LCD\LCD.c">
+    <Compile Include="Game\GameLogic.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LCD\LCD.h">
+    <Compile Include="Game\GameLogic.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Game\LCD\LCD.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Game\LCD\LCD.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Game\Timer\Timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Game\Timer\Timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

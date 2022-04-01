@@ -1,0 +1,18 @@
+typedef enum {
+    CORRECTPERC_INVALID,
+    BUFFERSIZE_INVALID,
+    CORRECTINPUTVALUE_INVALID,
+	UNKNOWN,
+} GAMELOGIC_ERROR;
+
+typedef enum {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    FORWARD,
+    BACKWARD,
+} DIRECTION;
+
+void GameLogic_Round();
+GAMELOGIC_ERROR GameLogic_Init();

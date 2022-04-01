@@ -33,14 +33,18 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
-../LCD \
-../Accelerometer
+../Game/Accelerometer \
+../Game/LCD \
+../Game \
+../Game/Timer
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../Accelerometer/Accelerometer.c \
-../LCD/LCD.c \
+../Game/Accelerometer/Accelerometer.c \
+../Game/GameLogic.c \
+../Game/LCD/LCD.c \
+../Game/Timer/Timer.c \
 ../main.c
 
 
@@ -51,23 +55,31 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-Accelerometer/Accelerometer.o \
-LCD/LCD.o \
+Game/Accelerometer/Accelerometer.o \
+Game/GameLogic.o \
+Game/LCD/LCD.o \
+Game/Timer/Timer.o \
 main.o
 
 OBJS_AS_ARGS +=  \
-Accelerometer/Accelerometer.o \
-LCD/LCD.o \
+Game/Accelerometer/Accelerometer.o \
+Game/GameLogic.o \
+Game/LCD/LCD.o \
+Game/Timer/Timer.o \
 main.o
 
 C_DEPS +=  \
-Accelerometer/Accelerometer.d \
-LCD/LCD.d \
+Game/Accelerometer/Accelerometer.d \
+Game/GameLogic.d \
+Game/LCD/LCD.d \
+Game/Timer/Timer.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
-Accelerometer/Accelerometer.d \
-LCD/LCD.d \
+Game/Accelerometer/Accelerometer.d \
+Game/GameLogic.d \
+Game/LCD/LCD.d \
+Game/Timer/Timer.d \
 main.d
 
 OUTPUT_FILE_PATH +=EindOpdracht.elf
@@ -84,14 +96,28 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-Accelerometer/Accelerometer.o: ../Accelerometer/Accelerometer.c
+Game/Accelerometer/Accelerometer.o: ../Game/Accelerometer/Accelerometer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
-LCD/LCD.o: ../LCD/LCD.c
+Game/GameLogic.o: ../Game/GameLogic.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+Game/LCD/LCD.o: ../Game/LCD/LCD.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+Game/Timer/Timer.o: ../Game/Timer/Timer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
