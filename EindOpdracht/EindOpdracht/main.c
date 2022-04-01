@@ -29,9 +29,9 @@
 int main( void )
 {
 	GameLogic_Init();
-	while (1)
-	{
-		// Reading measurement
-		GameLogic_Round();
-	}
+	//while (1)
+	//{
+		//// Reading measurement
+		//GameLogic_Round();
+	//}
 }

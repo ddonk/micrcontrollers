@@ -35,13 +35,13 @@ void wait( int ms )
 GAMELOGIC_ERROR GameLogic_Init()
 {
 	display_init();
-	wait(10000);
-	accelerometer_init();
-
-	TRESHOLD_MEASURMENT = accelerometer_read();
-
-	return UNKNOWN;
-    display_text("---starting up game---");
+	//wait(10000);
+	//accelerometer_init();
+//
+	//TRESHOLD_MEASURMENT = accelerometer_read();
+//
+	//return UNKNOWN;
+    //display_text("---starting up game---");
 }
 
 int randomNumber()

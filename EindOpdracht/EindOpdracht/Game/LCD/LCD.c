@@ -6,7 +6,7 @@
  */ 
 #include "LCD.h"
 
-char fullheart[] = {0x00,0x00,0x0a,0x15,0x11,0x0a,0x04,0x00};
+char fullheart[] = {0x00,0x0A,0x1F,0x1F,0x0E,0x04,0x00,0x00};
 char emptyheart[] = {0x00,0x00,0x0a,0x15,0x11,0x0a,0x04,0x00};
 
 
@@ -68,14 +68,16 @@ void display_clear(){
 	lcd_write_command(0x80);
 }
 
-void display_add_custom_char(char* character, int adress){
-	lcd_write_command(adress);
-	_delay_ms(2);
-	while (*character) {
-		lcd_write_data(*character++);
+void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
+{
+	unsigned char i;
+	if(loc<8)
+	{
+		lcd_write_command(0x40 + (loc*8));	/* Command 0x40 and onwards forces the device to point CGRAM address */
+		for(i=0;i<8;i++)	/* Write 8 byte for generation of 1 character */
+		lcd_write_data(msg[i]);
 	}
 }
-
 void display_init() {
 	// See table 13 from the HD44780U datasheet.
 	DDRC = 0xFF;
@@ -104,8 +106,9 @@ void display_init() {
 	switch_E();
 	
 	// Set cursor to position 0 on first row.
+	display_clear();
 	lcd_write_command(0x02);
-
-	display_add_custom_char(fullheart, 0x40);
-	display_add_custom_char(emptyheart, 0x48);
+	unsigned char Character6[9] = { 0x0A, 0x0A, 0x1F, 0x11, 0x11, 0x0E, 0x04, 0x04 };
+	LCD_Custom_Char(0, fullheart);
+	lcd_write_data(0);
 }
