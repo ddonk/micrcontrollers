@@ -134,20 +134,32 @@ void spi_writeWord ( unsigned char adress, unsigned char data ){
 
 void writeLedDisplay( int value ){
 	// Error control
-	if (value > 9999 || value < 0){
+	if (value > 9999 ||value < -999){
 		return;
 	}
 	
-	// Writing numberr
-	for (int i = 1; i <= 4; i++)
-	{
-		// Writing to display	
-		spi_writeWord(i, (value % 10));
-	
-		// Incrementing modulo
-		value /= 10;
-	}
-	
+	if(value < 0) {
+		value *= -1;
+		for (int i = 1; i <= 3; i++)
+			{
+				// Writing to display
+				spi_writeWord(i, (value % 10));
+						
+				// Incrementing modulo
+				value /= 10;
+			}
+		//Writing z will write a '-' on the 7 seg
+		spi_writeWord(4, 'z');
+	} else {
+		for (int i = 1; i <= 4; i++)
+		{
+			// Writing to display
+			spi_writeWord(i, (value % 10));
+				
+			// Incrementing modulo
+			value /= 10;
+		}
+	}	
 }
 
 int main()
@@ -156,14 +168,7 @@ int main()
 	DDRB=0x01;					  	// Set PB0 pin as output for display select
 	spi_masterInit();              	// Initialize spi module
 	displayDriverInit();            // Initialize display chip
-
-	for (char i =1; i<=4; i++) // DONE : changed the amount of adress from 2 to 4 for both for loops.
-	{
-		spi_writeWord(i, 0);
-	}
-	wait(1000);
-
- 	writeLedDisplay(9909);
+	writeLedDisplay(-237);
 
   	return (1);
 }

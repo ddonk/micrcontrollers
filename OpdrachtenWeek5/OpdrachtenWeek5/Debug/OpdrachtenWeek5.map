@@ -14,6 +14,7 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
+ .text.wait     0x00000000       0x1e main.o
  .text.spi_writeRead
                 0x00000000        0xa main.o
  .text.displayOn
@@ -283,31 +284,29 @@ END GROUP
                 0x0000009c                __vector_20
                 0x0000009e                . = ALIGN (0x2)
  *(.text.*)
- .text.wait     0x0000009e       0x1e main.o
-                0x0000009e                wait
  .text.spi_masterInit
-                0x000000bc       0x16 main.o
-                0x000000bc                spi_masterInit
+                0x0000009e       0x16 main.o
+                0x0000009e                spi_masterInit
  .text.spi_write
-                0x000000d2        0x8 main.o
-                0x000000d2                spi_write
+                0x000000b4        0x8 main.o
+                0x000000b4                spi_write
  .text.spi_slaveSelect
-                0x000000da       0x18 main.o
-                0x000000da                spi_slaveSelect
+                0x000000bc       0x18 main.o
+                0x000000bc                spi_slaveSelect
  .text.spi_slaveDeSelect
-                0x000000f2       0x16 main.o
-                0x000000f2                spi_slaveDeSelect
+                0x000000d4       0x16 main.o
+                0x000000d4                spi_slaveDeSelect
  .text.displayDriverInit
-                0x00000108       0x42 main.o
-                0x00000108                displayDriverInit
+                0x000000ea       0x42 main.o
+                0x000000ea                displayDriverInit
  .text.spi_writeWord
-                0x0000014a       0x1e main.o
-                0x0000014a                spi_writeWord
+                0x0000012c       0x1e main.o
+                0x0000012c                spi_writeWord
  .text.writeLedDisplay
-                0x00000168       0x3c main.o
-                0x00000168                writeLedDisplay
- .text.main     0x000001a4       0x2e main.o
-                0x000001a4                main
+                0x0000014a       0x74 main.o
+                0x0000014a                writeLedDisplay
+ .text.main     0x000001be       0x14 main.o
+                0x000001be                main
  .text.libgcc.div
                 0x000001d2       0x26 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_divmodhi4.o)
                 0x000001d2                _div
@@ -440,34 +439,34 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xcde
+.debug_info     0x00000000      0xcd4
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x780 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_info    0x00000780      0x55e main.o
+ .debug_info    0x00000780      0x554 main.o
 
-.debug_abbrev   0x00000000      0x8c5
+.debug_abbrev   0x00000000      0x8ce
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x718 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_abbrev  0x00000718      0x1ad main.o
+ .debug_abbrev  0x00000718      0x1b6 main.o
 
-.debug_line     0x00000000      0x4d2
+.debug_line     0x00000000      0x4e8
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x16a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_line    0x0000016a      0x368 main.o
+ .debug_line    0x0000016a      0x37e main.o
 
-.debug_frame    0x00000000       0xfc
+.debug_frame    0x00000000       0xf4
  *(.debug_frame)
- .debug_frame   0x00000000       0xfc main.o
+ .debug_frame   0x00000000       0xf4 main.o
 
-.debug_str      0x00000000      0x4c1
+.debug_str      0x00000000      0x4cd
  *(.debug_str)
  .debug_str     0x00000000      0x27d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_str     0x0000027d      0x244 main.o
-                                0x27d (size before relaxing)
+ .debug_str     0x0000027d      0x250 main.o
+                                0x289 (size before relaxing)
 
-.debug_loc      0x00000000      0x1e9
+.debug_loc      0x00000000      0x21c
  *(.debug_loc)
- .debug_loc     0x00000000      0x1e9 main.o
+ .debug_loc     0x00000000      0x21c main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -487,9 +486,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x68
+.debug_ranges   0x00000000       0x80
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x68 main.o
+ .debug_ranges  0x00000000       0x80 main.o
 
 .debug_macro
  *(.debug_macro)
